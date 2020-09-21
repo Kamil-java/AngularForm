@@ -17,37 +17,33 @@ export class FormComponent implements OnInit {
     this.form = new FormGroup({
       name: new FormControl("", Validators.required),
       value: new FormControl("", Validators.required),
-      date: new FormControl("")
+      date: new FormControl("", Validators.required)
     });
   }
 
   ngOnInit(): void {
   }
 
-  ngOnChanges(): void{
-    if (this.expense){
-      this.form.patchValue(this.expense);
-    }
-  }
 
-  add(): void{
-      if (this.form.valid) {
-        const data = this.form.value;
-        const expense = new Expense(data.name,data.value,data.date);
-        this.expenseAdded.emit(expense);
-        this.form.reset();
-      }
+  add(): void {
+    if (this.form.valid)  {
+      const data = this.form.value;
+      const expense = new Expense(data.name, data.value, data.date);
+      this.expenseAdded.emit(expense);
+      this.form.reset({
+        date: ''
+      });
+    }
   }
 
   update(): void{
 
   }
-  private getExpenseFromData(): Expense{
-    const data = this.form.value;
-    return new Expense(data.name,data.value,data.date);
-  }
+
 
   isEdit(): boolean{
     return !!this.expense;
   }
+
+
 }

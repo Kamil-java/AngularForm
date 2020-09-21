@@ -1,7 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Expense} from "./expense";
-import {element} from "protractor";
-import index from "@angular/cli";
 
 @Component({
   selector: 'app-budget-list',
@@ -9,12 +7,12 @@ import index from "@angular/cli";
   styleUrls: ['./budget-list.component.scss']
 })
 export class BudgetListComponent implements OnInit {
-  @Input()
-  @Output() update1 = new EventEmitter<Expense>();
+  @Input() newExpense: Expense = null;
+  @Output() updated = new EventEmitter<Expense>();
   expenses: Expense[] = [
-    new Expense('Czynsz', 550, new Date(2020, 9, 10)),
-    new Expense('Rata', 400, new Date(2020, 9, 12)),
-    new Expense('Jedzenie', 200, new Date(2020, 9, 20)),
+    // new Expense('Czynsz', 550, new Date(2020, 9, 10)),
+    // new Expense('Rata', 400, new Date(2020, 9, 12)),
+    // new Expense('Jedzenie', 200, new Date(2020, 9, 20)),
   ]
 
 
@@ -22,6 +20,15 @@ export class BudgetListComponent implements OnInit {
   }
 
   ngOnInit(): void {
+  }
+  ngOnChanges(): void {
+    if (this.newExpense) {
+      this.addToExpenses(this.newExpense);
+    }
+  }
+
+  delete(expense: Expense): void {
+    this.expenses = this.expenses.filter(element => element.name !== expense.name);
   }
 
   deleteByIndex(i): void {
@@ -32,12 +39,12 @@ export class BudgetListComponent implements OnInit {
     this.expenses = this.expenses.filter(element => element.name !== name);
   }
 
-  update(exp: Expense): void {
-    this.update1.emit(exp);
+  update(expense: Expense): void {
+    this.updated.emit(expense);
   }
 
-  addTo(exp: Expense): void {
-    this.expenses.push(exp)
+  private addToExpenses(expense: Expense): void {
+    this.expenses.push(expense);
   }
 
 }

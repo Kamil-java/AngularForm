@@ -1,2 +1,2 @@
-<app-budget-list></app-budget-list>
-<app-form></app-form>
+<app-budget-list [newExpense]="newExpense"></app-budget-list>
+<app-form (expenseAdded)="onExpenseAdded($event)"></app-form>
